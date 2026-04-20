@@ -1,6 +1,7 @@
 import "@govtechsg/sgds-web-component";
 import { useEffect, useRef, useState } from "react";
 import "./custom-elements.d.ts";
+import type { SgdsInput } from "@govtechsg/sgds-web-component/components";
 
 interface SearchFormProps {
   onSearch: (query: string) => void;
@@ -13,21 +14,12 @@ interface SearchFormProps {
 export function SearchForm({ onSearch }: SearchFormProps) {
   const [query, setQuery] = useState("");
   const inputRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const el = inputRef.current;
-    if (!el) return;
-
-    // SGDS fires 'sgds-input' instead of the native 'input' event.
-    // We read the value from the shadow DOM's native <input> directly.
-    const handleInput = () => {
-      const nativeInput = el.shadowRoot?.querySelector("input");
-      setQuery(nativeInput?.value ?? "");
+  
+   const handleInput = (e: CustomEvent) => {
+    const sgdsInput = e.target as SgdsInput
+     const value = sgdsInput?.value
+      setQuery(value ?? "");
     };
-
-    el.addEventListener("sgds-input", handleInput);
-    return () => el.removeEventListener("sgds-input", handleInput);
-  }, []);
 
   return (
     <>
@@ -39,7 +31,7 @@ export function SearchForm({ onSearch }: SearchFormProps) {
         role="search"
       >
         {/* @ts-ignore - ref typing for custom elements */}
-        <sgds-input ref={inputRef} label="Search" name="query" />
+        <sgds-input ref={inputRef} onsgds-input={handleInput} label="Search" name="query" />
         <sgds-button type="submit">Search</sgds-button>
       </form>
       {query === "sgds rocks" && (

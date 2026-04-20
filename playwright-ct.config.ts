@@ -1,7 +1,7 @@
 import { defineConfig, devices } from "@playwright/experimental-ct-react";
 
 export default defineConfig({
-  testDir: "./src",
+  testDir: "./playwright",
   testMatch: "**/*.spec.tsx",
   fullyParallel: true,
   forbidOnly: !!process.env.CI,

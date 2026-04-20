@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/experimental-ct-react";
-import { SearchForm } from "./SearchForm";
+import { SearchForm } from "../src/SearchForm";
 
 // ─── Proof we're in a real browser ─────────────────────────────────────────
 
